@@ -1,0 +1,344 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    float: bottom;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 5em;
+    background-color: #00525F;
+    color: white;
+}
+
+#header li {
+    margin: 0;
+    padding: 0;
+    float: left;
+    display: inline;
+}
+
+#hbmenu {
+    width: 2em;
+    height: 2em;
+    background: none;
+    background-image: url(../includes/icons/hamburger.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    margin: 2em;
+}
+
+#oneqname {
+    position: absolute;
+    font-size: 250%;
+    font-weight: bold;
+    bottom: 0;
+    margin: 0;
+    padding: 0 0 0 3em;
+}
+
+#headerright {
+    float: right;
+    list-style-type: none;
+}
+
+#searchbar {
+    margin: 3em 3em 0 0;
+    padding: 0.5em;
+    background: #1D676B;
+    border: none;
+    color: white;
+}
+
+#headerright {
+    margin-right: 2em;
+}
+
+#headerright li button {
+    border-radius: 50%;
+    background: none;
+    border: none;
+    margin-top: 2.5em;
+    padding: 0.5em;
+}
+
+#oqprev:hover {
+    background: #1D676B;
+}
+
+#oqplay:hover {
+    background: #1D676B;
+}
+
+#oqnext:hover {
+    background: #1D676B;
+}
+
+#gpprev:hover {
+    background: #FF7246;
+}
+
+#gpplay:hover {
+    background: #FF7246;
+}
+
+#gpnext:hover {
+    background: #FF7246;
+}
+
+#scprev:hover {
+    background: #111111;
+}
+
+#scplay:hover {
+    background: #111111;
+}
+
+#scnext:hover {
+    background: #111111;
+}
+
+#pandprev:hover {
+    background: #224099;
+}
+
+#pandplay:hover {
+    background: #224099;
+}
+
+#pandnext:hover {
+    background: #224099;
+}
+
+#spotprev:hover {
+    background: #666666;
+}
+
+#spotplay:hover {
+    background: #666666;
+}
+
+#spotnext:hover {
+    background: #666666;
+}
+
+#hmprev:hover > #prevsvg polygon{
+    fill: #0063DC;
+}
+
+#hmplay:hover > #playsvg polygon{
+    fill: #0063DC;
+}
+
+#hmnext:hover > #nextsvg polygon{
+    fill: #0063DC;
+}
+
+#prevsvg polygon {
+    fill: white;
+}
+
+#playsvg polygon {
+    fill: white;
+}
+
+#nextsvg polygon {
+    fill: white;
+}
+
+#navbar {
+    position: absolute;
+    left: -350px;
+    top: 0;
+    height: 100%;
+    width: 350px;
+    background: white;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.8);
+}
+
+.navbaropen {
+    left: 0px;
+    animation: opennav 2s forwards;
+}
+
+.navbarclosed {
+    left: -350px;
+    animation: closenav 2s forwards;
+}
+
+@-webkit-keyframes opennav {
+    from {left: -350px;}
+    to {left: 0px;}
+}
+
+@keyframes opennav {
+    from {left: -350px;}
+    to {left: 0px;}
+}
+
+@-webkit-keyframes closenav {
+    from {left: 0px;}
+    to {left: -350px;}
+}
+
+@keyframes closenav {
+    from {left: 0px;}
+    to {left: -350px;}
+}
+
+@-webkit-keyframes OQHeader {
+    to {background-color: #00525F;}
+}
+
+@keyframes OQHeader {
+    to {background-color: #00525F;}
+}
+
+@-webkit-keyframes OQSearch {
+    to {background-color: #1D676B;}
+}
+
+@keyframes OQSearch {
+    to {background-color: #1D676B;}
+}
+
+@-webkit-keyframes GPMusicHeader {
+    to {background-color: #FF5722;}
+}
+
+@keyframes GPMusicHeader {
+    to {background-color: #FF5722;}
+}
+
+@-webkit-keyframes GPMusicSearch {
+    to {background-color: #FF7246;}
+}
+
+@keyframes GPMusicSearch {
+    to {background-color: #FF7246;}
+}
+
+@-webkit-keyframes SCHeader {
+    to {background-color: #333333;}
+}
+
+@keyframes SCHeader {
+    to {background-color: #333333;}
+}
+
+@-webkit-keyframes SCSearch {
+    to {background-color: #FF4200;}
+}
+
+@keyframes SCSearch {
+    to {background-color: #FF4200;}
+}
+
+@-webkit-keyframes PandHeader {
+    to {background-color: #11204D;}
+}
+
+@keyframes PandHeader {
+    to {background-color: #11204D;}
+}
+
+@-webkit-keyframes PandSearch {
+    to {background-color: #224099;}
+}
+
+@keyframes PandSearch {
+    to {background-color: #224099;}
+}
+
+@-webkit-keyframes SpotHeader {
+    to {background-color: #000000;}
+}
+
+@keyframes SpotHeader {
+    to {background-color: #000000;}
+}
+
+@-webkit-keyframes SpotSearch {
+    to {background-color: #2EBD59;}
+}
+
+@keyframes SpotSearch {
+    to {background-color: #2EBD59;}
+}
+
+@-webkit-keyframes HMHeader {
+    to {background-color: #83C441;}
+}
+
+@keyframes HMHeader {
+    to {background-color: #83C441;}
+}
+
+@-webkit-keyframes HMSearch {
+    to {background-color: #222222;}
+}
+
+@keyframes HMSearch {
+    to {background-color: #222222;}
+}
+
+#hbmenu2 {
+    width: 2em;
+    height: 2em;
+    background: none;
+    background-image: url(../includes/icons/hamburger2.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    border: none;
+    margin: 2em;
+}
+
+#navbar_top {
+    float: bottom;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 5em;
+}
+
+#navbar_top li {
+    display: inline;
+    float: left;
+}
+
+#navbar_top li h2 {
+    padding-top: 0.5em;
+}
+
+#navbar_options {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#navbar_options li button {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 125%;
+    padding: 0.5em 2em;
+}
+
+#navbar_options li button:hover {
+    background: #cccccc;
+}
+
+.navbar_hr {
+    color: white;
+    margin: 1em;
+}
