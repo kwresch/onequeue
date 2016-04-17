@@ -344,5 +344,79 @@ body {
 }
 
 #content {
-    margin-top: 6em;
+    margin: 6em 36em 6em 18em;
+}
+
+#top_menu {
+    width: 100%;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+#top_menu li {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+#top_menu li button {
+    padding: 1em 2em 1em 2em;
+    margin: 0;
+    font-size: 125%;
+    border: none;
+    background: none;
+}
+
+#top_menu li button:hover {
+    background: lightgrey;
+}
+
+.tm_active {
+    background: #eeeeee;
+}
+
+#song_list {
+    margin-top: 0;
+    list-style-type: none;
+}
+
+.thumbnail {
+    margin: 0;
+    padding: 0;
+    width: 48px;
+    height: 48px;
+}
+
+.song_name {
+    font-weight: bold;
+    font-size: 110%;
+    margin: 1em 0 0.5em 0;
+    padding: 0;
+}
+
+.artist {
+    font-size: 110%;
+    margin: 1em 0 0.5em 0;
+    padding: 0 0 0 0.5em;
+}
+
+.album {
+    font-size: 110%;
+    margin: 0.5em 0 1em 0;
+    padding: 0;
+}
+
+.playbutton {
+    margin: 2em 3em 0 0;
+    float: right;
+    background: none;
+    border: none;
+}
+
+.playbutton svg polygon {
+    fill: lightgrey;
+}
+
+.playbutton:hover > svg polygon {
+    fill: black;
 }
