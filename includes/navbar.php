@@ -1,6 +1,5 @@
 <?php 
     echo '
-        <!--script src="includes/js/color.js"></script-->
         <nav id="navbar">
             <ul id="navbar_top">
                 <li><input type="button" id="hbmenu2" name="hbmenu2" onclick="pushin()"/></li>
@@ -12,7 +11,7 @@
                 <li><button id="sc" name="sc" onclick="toSoundCloud()">Sound Cloud</button></li>
                 <li><button id="pandora" name="pandora" onclick="toPandora()">Pandora</button></li>
                 <li><button id="spotify" name="spotify" onclick="toSpotify()">Spotify</button></li>
-                <li><button id="hypem" name="hypem" onclick="toHypeM()">Hype Machine</button></li>
+                <li><button id="hypem" name="hypem" onclick="getHypeMachine()">Hype Machine</button></li>
                 <li><hr class="navbar_hr"></li>
                 <li><button>Settings</button></li>
                 <li><button>Log out</button></li>

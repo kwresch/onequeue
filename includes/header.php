@@ -1,5 +1,6 @@
 <?php 
     echo '
+        <script src="includes/js/content.js"></script>
         <script src="includes/js/navbar.js"></script>
         <ul id="header">
             <script src="includes/js/color.js"></script>

@@ -342,3 +342,7 @@ body {
     color: white;
     margin: 1em;
 }
+
+#content {
+    margin-top: 6em;
+}

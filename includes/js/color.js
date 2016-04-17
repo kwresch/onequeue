@@ -54,7 +54,6 @@ function toSoundCloud() {
     cont[1].id = "scplay";
     cont[2].id = "scnext";
     var inter = setInterval(setColGPMusic, 1000);
-    var inter = setInterval(setColGPMusic, 1000);
     function setColGPMusic() {
         head.style.backgroundColor = '#333333';
         searchbar.style.backgroundColor = '#FF4200';
@@ -75,7 +74,6 @@ function toPandora() {
     cont[0].id = "pandprev";
     cont[1].id = "pandplay";
     cont[2].id = "pandnext";
-    var inter = setInterval(setColGPMusic, 1000);
     var inter = setInterval(setColGPMusic, 1000);
     function setColGPMusic() {
         head.style.backgroundColor = '#11204D';
@@ -98,7 +96,6 @@ function toSpotify() {
     cont[1].id = "spotplay";
     cont[2].id = "spotnext";
     var inter = setInterval(setColGPMusic, 1000);
-    var inter = setInterval(setColGPMusic, 1000);
     function setColGPMusic() {
         head.style.backgroundColor = '#000000';
         searchbar.style.backgroundColor = '#2EBD59';
@@ -119,7 +116,6 @@ function toHypeM() {
     cont[0].id = "hmprev";
     cont[1].id = "hmplay";
     cont[2].id = "hmnext";
-    var inter = setInterval(setColGPMusic, 1000);
     var inter = setInterval(setColGPMusic, 1000);
     function setColGPMusic() {
         head.style.backgroundColor = '#83C441';
