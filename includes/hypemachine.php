@@ -1,111 +1,113 @@
 <?php 
-    
-    /* ECHO MENU */
-    
+
     $ch = curl_init();
-    
-    if ($_GET['q'] == "latest") {
-        echo '
-            <ul id="top_menu">
-                <li class="tm_active"><button onclick="getHypeMachine(\'latest\')">Latest</button></li>
-                <li><button onclick="getHypeMachine(\'popular\')">Popular</button></li>
-                <li id="favorites"><button onclick="getHypeMachine(\'favorites\')">Favorites</button></li>
-            </ul>
-        ';
-        curl_setopt($ch, CURLOPT_URL, "http://hypem.com/latest");
-    } else if ($_GET['q'] == "popular") {
-        echo '
-            <ul id="top_menu">
-                <li id="latest"><button onclick="getHypeMachine(\'latest\')">Latest</button></li>
-                <li class="tm_active"><button onclick="getHypeMachine(\'popular\')">Popular</button></li>
-                <li id="favorites"><button onclick="getHypeMachine(\'favorites\')">Favorites</button></li>
-            </ul>
-        ';
-        curl_setopt($ch, CURLOPT_URL, "http://hypem.com/popular?workaround=lol");
-    } else if ($_GET['q'] == "favorites") {
+
+    if ($_GET['tab'] == "latest") {
+        curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/tracks?count=10&key=swagger');
+    } else if ($_GET['tab'] == "popular") {
+        curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/popular?count=20&key=swagger');
+    } else if ($_GET['tab'] == "favorites") {
+        include_once("logged_in.php");
+        if ($hm_token == 0) {
+            $hm_username = "keenanw";
+            $hm_password = "keenan@1";
+            $login = curl_init();
         
+            curl_setopt($login, CURLOPT_URL, 'https://api.hypem.com/v2/get_token?key=swagger');
+            curl_setopt($login, CURLOPT_POST, 1);
+            curl_setopt($login, CURLOPT_RETURNTRANSFER,true);
+            curl_setopt($login, CURLOPT_POSTFIELDS, "username=".$hm_username."&password=".$hm_password."&device_id=314159265&");
+        
+            $result = curl_exec($login);
+        
+            curl_close($login);
+            
+            $json = json_decode($result);
+            $hm_token = $json->{'hm_token'};
+        }
+        curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/me/favorites?count=20&hm_token='.$hm_token.'&key=swagger');
+    } else {
+        echo '
+            <h1>404 ERROR</h1>
+        ';
+        return;
     }
     
     curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-    //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    //curl_setopt($ch, CURLOPT_HEADER, false);
-    
     $content = curl_exec($ch);
-    
     curl_close($ch);
     
-    echo '
-        <ul id="song_list">
-    ';
-    $h = 0;
-    for ($i; $i < strlen($content) - 1; $i++) {
-        if (substr($content, $i, 35) == "http://static.hypem.net/thumbs_new/") {
-            if ($h % 2 == 0) {
-                $j = $i + 35;
-                while (substr($content, $j, 3) != "jpg") {
-                    $j++;
-                }
-                $thumbnail = substr($content, $i, $j - $i + 3);
-                $i = $j;
-                while (substr($content, $i, 14) != "class=\"artist\"") {
-                    $i++;
-                }
-                $j = $i + 34;
-                while ($content[$j] != '>') {
-                    $j++;
-                }
-                $i = $j + 1;
-                $j += 2;
-                while ($content[$j] != '<') {
-                    $j++;
-                }
-                $artist = substr($content, $i, $j - $i);
-                $i = $j;
-                while (substr($content, $i, 18) != "class=\"base-title\"") {
-                    $i++;
-                }
-                $i += 19;
-                $j = $i + 1;
-                while ($content[$j] != '<') {
-                    $j++;
-                }
-                $song_name = substr($content, $i, $j - $i);
-                echo '
-                    <hr style="margin: 0; color: white;">
+    $song_data = json_decode($content, true);
+    
+    $ch = curl_init();
+    if ($_GET['tab'] == 'latest') {
+        curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/latest');
+    } else if ($_GET['tab'] == 'popular') {
+        curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/popular?workaround=lol');
+    } else if ($_GET['tab'] == 'favorites') {
+        curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/'.$hm_username);
+    }
+    
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HEADER, 1);
+    $page = curl_exec($ch);
+    curl_close($ch);
+    
+    preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $page, $matches);
+    $cookies = array();
+    foreach($matches[1] as $item) {
+        parse_str($item, $cookie);
+        $cookies = array_merge($cookies, $cookie);
+    }
+    
+    $j = 0;
+    
+    for ($i = 0; $i < 20; $i++) {
+        while (substr($page, $j, 5) != "\"key\"") {
+            $j++;
+        }
+        $j += 7;
+        
+        $key = substr($page, $j, 32);
+        
+        //echo 'KEY: '.$key.'<br>';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/serve/source/'.$song_data[$i]['itemid'].'/'.$key.'?_='.time());
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_COOKIE, 'AUTH='.$cookie["AUTH"]);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        $url_data = json_decode($result, true);
+        
+        if ($song_data[$i]['thumb_url_medium'] == null) {
+            $song_data[$i]['thumb_url_medium'] = $song_data[$i]['thumb_url'];
+        }
+        
+        echo '
+            <div>
+                <ul class="song_ul">
                     <li class="song_li">
-                        <ul class="song">
-                            <!--li style="display: inline-block"-->
-                                <img class="thumbnail" src="'.$thumbnail.'"/>
-                            <!--/li-->
-                            <li style="display: inline-block">
-                                <ul style="list-style-type: none;">
-                                    <li>
-                                        <ul style="list-style-type: none; margin: 0; padding: 0;">
-                                            <li style="display: inline-block;">
-                                                <p class="song_name">'.$song_name.'</p>
-                                            </li>
-                                            <li style="display: inline-block;">
-                                                <p class="artist">'.$artist.'</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <p class="album">Album Name</p>
-                                    </li>
-                                </ul>
+                        <img class="thumbnail" src="'.$song_data[$i]['thumb_url_medium'].'">
+                    </li>
+                    <li class="song_li">
+                        <ul class="song_info">
+                            <li>
+                                <p class="song_name">'.$song_data[$i]['title'].'</p>
+                                <p class="artist">'.$song_data[$i]['artist'].'</p>
                             </li>
-                            <!--li style="display: inline-block"-->
-                                <button class="playbutton"><svg class="playbuttonsvg" width="24" height="24"><polygon points="1.5,0 1.5,24 22.5,12"/></svg></button>
-                            <!--/li-->
+                            <li>
+                                <p class="album">Album Name</p>
+                            </li>
+                            <li>
+                                <audio class="player" src="'.$url_data['url'].'" controls></audio>
+                            </li>
                         </ul>
                     </li>
-                ';
-            }
-            $h++;
-        }
+                </ul>
+                <hr class="song_hr">
+            </div>
+        ';
     }
-    echo '
-        </ul>
-    ';
-    //echo $content;
 ?>

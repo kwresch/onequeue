@@ -5,7 +5,7 @@ function toOneQueue() {
     var searchbar = document.getElementById("searchbar");
     searchbar.style.animation = "OQSearch 1s forwards";
     searchbar.style.WebkitAnimation = "OQSearch 1s forwards";
-    pushin();
+    //pushin();
     var cont = document.getElementsByClassName("cont");
     var i;
     cont[0].id = "oqprev";
@@ -26,7 +26,7 @@ function toGPMusic() {
     var searchbar = document.getElementById("searchbar");
     searchbar.style.animation = "GPMusicSearch 1s forwards";
     searchbar.style.WebkitAnimation = "GPMusicSearch 1s forwards";
-    pushin();
+    //pushin();
     var cont = document.getElementsByClassName("cont");
     var i;
     cont[0].id = "gpprev";
@@ -47,7 +47,7 @@ function toSoundCloud() {
     var searchbar = document.getElementById("searchbar");
     searchbar.style.animation = "SCSearch 1s forwards";
     searchbar.style.WebkitAnimation = "SCSearch 1s forwards";
-    pushin();
+    //pushin();
     var cont = document.getElementsByClassName("cont");
     var i;
     cont[0].id = "scprev";
@@ -68,7 +68,7 @@ function toPandora() {
     var searchbar = document.getElementById("searchbar");
     searchbar.style.animation = "PandSearch 1s forwards";
     searchbar.style.WebkitAnimation = "PandSearch 1s forwards";
-    pushin();
+    //pushin();
     var cont = document.getElementsByClassName("cont");
     var i;
     cont[0].id = "pandprev";
@@ -89,7 +89,7 @@ function toSpotify() {
     var searchbar = document.getElementById("searchbar");
     searchbar.style.animation = "SpotSearch 1s forwards";
     searchbar.style.WebkitAnimation = "SpotSearch 1s forwards";
-    pushin();
+    //pushin();
     var cont = document.getElementsByClassName("cont");
     var i;
     cont[0].id = "spotprev";
@@ -110,7 +110,7 @@ function toHypeM() {
     var searchbar = document.getElementById("searchbar");
     searchbar.style.animation = "HMSearch 1s forwards";
     searchbar.style.WebkitAnimation = "HMSearch 1s forwards";
-    pushin();
+    //pushin();
     var cont = document.getElementsByClassName("cont");
     var i;
     cont[0].id = "hmprev";
