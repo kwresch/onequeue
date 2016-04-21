@@ -62,15 +62,19 @@
     
     $j = 0;
     
+    echo '{"tracks":[';
+    
     for ($i = 0; $i < 20; $i++) {
+        if ($song_data[$i]['title'] == null) {
+            break;
+        }
+        
         while (substr($page, $j, 5) != "\"key\"") {
             $j++;
         }
         $j += 7;
         
         $key = substr($page, $j, 32);
-        
-        //echo 'KEY: '.$key.'<br>';
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/serve/source/'.$song_data[$i]['itemid'].'/'.$key.'?_='.time());
@@ -85,7 +89,19 @@
             $song_data[$i]['thumb_url_medium'] = $song_data[$i]['thumb_url'];
         }
         
-        echo '
+        $data = array('title' => $song_data[$i]['title'],
+            'artist' => $song_data[$i]['artist'],
+            'album' => "Album Name",
+            'thumbnail' => $song_data[$i]['thumb_url_medium'],
+            'url' => $url_data['url']);
+            
+        if ($i > 0) {
+            echo ',';
+        }
+            
+        echo json_encode($data);
+        
+        /*echo '
             <div>
                 <ul class="song_ul">
                     <li class="song_li">
@@ -108,6 +124,7 @@
                 </ul>
                 <hr class="song_hr">
             </div>
-        ';
+        ';*/
     }
+    echo ']}';
 ?>

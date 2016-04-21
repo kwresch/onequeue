@@ -154,7 +154,7 @@ body {
 }
 
 #navbar {
-    position: absolute;
+    position: fixed;
     left: -350px;
     top: 0;
     height: 100%;
@@ -344,7 +344,7 @@ body {
 }
 
 #content {
-    margin: 6em 24em 6em 18em;
+    margin: 6em 30em 6em 18em;
 }
 
 #top_menu {

@@ -1,24 +1,24 @@
 var CLIENT_ID = '643430bc7251b18258461c3cee6040f8';
 var songs = "";
 
-function addSong(song, artist, album, thumbnail, url) {
+function addSong(track) {
     var song = `
         <div>
             <ul class="song_ul">
                 <li class="song_li">
-                    <img class="thumbnail" src="`+thumbnail+`">
+                    <img class="thumbnail" src="`+track.thumbnail+`">
                 </li>
                 <li class="song_li">
                     <ul class="song_info">
                         <li>
-                            <p class="song_name">`+song+`</p>
-                            <p class="artist">`+artist+`</p>
+                            <p class="song_name">`+track.title+`</p>
+                            <p class="artist">`+track.artist+`</p>
                         </li>
                         <li>
-                            <p class="album">`+album+`</p>
+                            <p class="album">`+track.album+`</p>
                         </li>
                         <li>
-                            <audio class="player" src="`+url+`" controls></audio>
+                            <audio class="player" src="`+track.url+`" controls preload></audio>
                         </li>
                     </ul>
                </li>
@@ -34,8 +34,42 @@ function pushSongs() {
     songs = "";
 }
 
-function getMyMusic () {
-    
+function getMyMusic (tab) {
+    toOneQueue();
+    var content = "";
+    if (tab == '1') {
+        content = `
+            <ul id="top_menu">
+                <li class="tm_active"><button onclick="getMyMusic(\'1\')">1</button></li>
+                <li><button onclick="getMyMusic(\'2\')">2</button></li>
+            </ul>
+            <hr class="song_hr">
+            <div id="playlist"></div>
+            <div id="song_list">
+            </div>
+        `;
+    } else if (tab == '2') {
+        content = `
+            <ul id="top_menu">
+                <li><button onclick="getMyMusic(\'1\')">1</button></li>
+                <li class="tm_active"><button onclick="getMyMusic(\'2\')">2</button></li>
+            </ul>
+            <hr class="song_hr">
+            <div id="song_list">
+            </div>
+        `;
+    } else {
+        content = `
+            <ul id="top_menu">
+                <li><button onclick="getMyMusic(\'1\')">1</button></li>
+                <li><button onclick="getMyMusic(\'2\')">2</button></li>
+            </ul>
+            <hr class="song_hr">
+            <div id="song_list">
+            </div>
+        `;
+    }
+    document.getElementById("content").innerHTML = content;
 }
 
 function getGPMusic() {
@@ -102,7 +136,12 @@ function getSoundCloud(tab) {
                         //document.getElementById("song_list").innerHTML = playlists[0].tracks;
                         var i;
                         for (i = 0; i < playlists[0].tracks.length; i++) {
-                            addSong(playlists[0].tracks[i].title, playlists[0].tracks[i].user.username, "Album Name", playlists[0].tracks[i].artwork_url, playlists[0].tracks[i].stream_url+"?client_id="+CLIENT_ID);
+                            addSong({title:playlists[0].tracks[i].title,
+                                artist:playlists[0].tracks[i].user.username,
+                                album:"Album Name",
+                                thumbnail:playlists[0].tracks[i].artwork_url,
+                                url:playlists[0].tracks[i].stream_url+"?client_id="+CLIENT_ID});
+                            //addSong(playlists[0].tracks[i].title, playlists[0].tracks[i].user.username, "Album Name", playlists[0].tracks[i].artwork_url, playlists[0].tracks[i].stream_url+"?client_id="+CLIENT_ID);
                         }
                         pushSongs();
                         //document.getElementById("song_list").innerHTML = playlists;
@@ -116,7 +155,12 @@ function getSoundCloud(tab) {
                         } else {
                             var i;
                             for (i = 0; i < likes.length; i++) {
-                                addSong(likes[i].title, likes[i].user.username, "Album Name", likes[i].artwork_url, likes[i].stream_url+"?client_id="+CLIENT_ID);
+                                addSong({title:likes[i].title, 
+                                    artist:likes[i].user.username,
+                                    album:"Album Name",
+                                    thumbnail:likes[i].artwork_url,
+                                    url:likes[i].stream_url+"?client_id="+CLIENT_ID});
+                                //addSong(likes[i].title, likes[i].user.username, "Album Name", likes[i].artwork_url, likes[i].stream_url+"?client_id="+CLIENT_ID);
                             }
                             pushSongs();
                         }
@@ -187,7 +231,14 @@ function getHypeMachine(tab) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            document.getElementById("song_list").innerHTML = xhttp.responseText;
+            //alert("DONE" + JSON.parse("{\"firstname\":\"John\"}"));
+            //document.getElementById("song_list").innerHTML = JSON.parse(xhttp.responseText).tracks.length;
+            var tracks = JSON.parse(xhttp.responseText).tracks;
+            //var i = 0;
+            for (var i = 0; i < tracks.length; i++) {
+                addSong(tracks[i]);
+            }
+            pushSongs();
         }
     };
     xhttp.open("GET", "includes/hypemachine.php?tab="+tab, true);

@@ -5,6 +5,7 @@
         <title>Library</title>
         <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
         <script src="includes/js/soundcloud.js"></script>
+        <script src="includes/js/queue.js"></script>
     </head>
     <body id="body">
         <?php 
@@ -22,7 +23,7 @@
             if(window.location.hash) {
                 var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
                 if (hash == 'mymusic') {
-                    toOneQueue();
+                    getMyMusic('1');
                 } else if (hash == 'gpmusic') {
                     toGPMusic();
                 } else if (hash == 'soundcloud') {
@@ -38,6 +39,23 @@
             } else {
                 window.location.hash = 'mymusic';
                 // No hash found
+            }
+            window.onhashchange = hashChange;
+            function hashChange() {
+                var hash = window.location.hash.substring(1);
+                if (hash == 'mymusic') {
+                    getMyMusic('1');
+                } else if (hash == 'gpmusic') {
+                    toGPMusic();
+                } else if (hash == 'soundcloud') {
+                    getSoundCloud('playlists');
+                } else if (hash == 'pandora') {
+                    toPandora();
+                } else if (hash == 'spotify') {
+                    toSpotify();
+                } else if (hash == 'hypemachine') {
+                    getHypeMachine('latest');
+                }
             }
         </script>
 </html>
