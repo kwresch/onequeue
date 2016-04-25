@@ -6,7 +6,5 @@ SC.initialize({
 function scConnect() {
     SC.connect().then(function() {
         return SC.get('/me');
-    });//.then(function(me) {
-        //alert('Hello, ' + me.authorization_code);
-    //});
+    });
 };

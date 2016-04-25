@@ -351,6 +351,7 @@ body {
     width: 100%;
     margin-bottom: 0;
     list-style-type: none;
+    overflow-x: auto;
 }
 
 #top_menu li {
@@ -368,11 +369,11 @@ body {
 }
 
 #top_menu li button:hover {
-    background: lightgrey;
+    background: #E6E6E6;
 }
 
 .tm_active {
-    background: #eeeeee;
+    background: #F2F2F2;
 }
 
 #song_list {
@@ -386,23 +387,12 @@ body {
     color: white;
 }
 
-.song_ul {
-    list-style-type: none;
-}
-
-.song_li {
-    display: inline-block;
-}
-
-.song_info {
-    list-style-type: none;
-}
-
 .thumbnail {
-    margin: 0;
-    padding: 1em;
+    margin: 1em;
+    padding: 0;
     height: 128px;
     width: 128px;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
 }
 
 .song_name {
@@ -426,17 +416,98 @@ body {
     padding: 0;
 }
 
-.playbutton {
-    margin: 2em 3em 0 0;
-    float: right;
+.song_play {
     background: none;
     border: none;
 }
 
-.playbutton svg polygon {
-    fill: lightgrey;
+.song_play_svg {
+    fill: #CCCCCC;
 }
 
-.playbutton:hover > svg polygon {
-    fill: black;
+.song_play:hover > svg {
+    fill: #999999;
+}
+
+.song_add {
+    background: none;
+    border: none;
+}
+
+.song_add_svg {
+    fill: #CCCCCC;
+}
+
+.song_add:hover > svg {
+    fill: #999999;
+}
+
+.test:hover > div {
+    display: block;
+}
+
+.song_add_control {
+    position: relative;
+}
+
+.song_add_drop {
+    display: none;
+    position: absolute;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+}
+
+.song_add_drop button {
+    background: white;
+    font-size: 100%;
+    text-align: left;
+    padding: 0.5em;
+    min-width: 10em;
+    text-decoration: none;
+    display: block;
+}
+
+.song_add_drop button:hover {
+    background: #F2F2F2;
+}
+
+#queue {
+    position: fixed;
+    height: 90%;
+    width: 20em;
+    right: 0;
+    top: 5.5em;
+    overflow-y: auto;
+}
+
+.queue_thumbnail {
+    height: 48px;
+    width: auto;
+    float: left;
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+}
+
+.queue_hr {
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.queue_div {
+    word-wrap: break-word;
+    margin: 0;
+    padding: 0;
+}
+
+.queue_div:hover {
+    background: #E6E6E6;
+}
+
+.queue_info {
+    padding: 0.5em;
+}
+
+.queue_info p {
+    word-wrap: break-word;
+    margin: 0;
+    padding: 0.2em;
 }

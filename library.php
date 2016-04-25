@@ -12,18 +12,16 @@
             include_once("includes/header.php");
         ?>
         <div id="content">
-            <ul id="top_menu">
-            </ul>
-            <ul id="song_list">
-                TEST
-            </ul>
+            <ul id="top_menu"></ul>
+            <ul id="song_list"></ul>
         </div>
+        <div id="queue"></div>
     </body>
     <script>
             if(window.location.hash) {
                 var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
                 if (hash == 'mymusic') {
-                    getMyMusic('1');
+                    getMyMusic('My Favorites');
                 } else if (hash == 'gpmusic') {
                     toGPMusic();
                 } else if (hash == 'soundcloud') {
@@ -38,13 +36,14 @@
                 // hash found
             } else {
                 window.location.hash = 'mymusic';
+                getMyMusic('My Favorites');
                 // No hash found
             }
             window.onhashchange = hashChange;
             function hashChange() {
                 var hash = window.location.hash.substring(1);
                 if (hash == 'mymusic') {
-                    getMyMusic('1');
+                    getMyMusic('My Favorites');
                 } else if (hash == 'gpmusic') {
                     toGPMusic();
                 } else if (hash == 'soundcloud') {
