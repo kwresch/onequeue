@@ -3,9 +3,9 @@ var songs = "";
 var count = 0;
 var playlists = new Array();
 var playlistsGot = false;
-getPlaylists();
 var pageLoaded = false;
 var isMyMusic = false;
+getPlaylists();
 
 function addSong(track) {
     buildQueue(track);
@@ -284,7 +284,7 @@ function getPlaylists() {
             playlistsGot = true;
         }
     };
-    xhttp.open("GET", "includes/playlists.php?id="+"1"+"&q=playlists", true);
+    xhttp.open("GET", "includes/playlists.php?id=" + 1 + "&q=playlists", true);
     xhttp.send();
 }
 
@@ -384,6 +384,7 @@ function search(tab) {
 }
 
 function loadingAnim() {
+    document.getElementById("content").innerHTML = "";
     var loadingDiv = document.getElementById("load_div");
     loadingDiv.style.display = 'none';
     loadingDiv.innerHTML = `

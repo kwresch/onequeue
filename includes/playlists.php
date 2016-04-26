@@ -5,7 +5,12 @@
     $id = $_GET["id"];
     include_once("db_info.php");
     
-    $db = new mysqli(HOST, USER, PASSWORD, DATABASE);
+    $db = new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
+
+    if ($db->connect_errno) {
+        echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
+        return;
+    }
 
     if (isset($_GET["q"]) && $_GET["q"] == "playlists") {
         $result = $db->query("SELECT DISTINCT(playlist) 
