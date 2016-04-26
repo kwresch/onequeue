@@ -5,7 +5,7 @@
     $id = $_GET["id"];
     include_once("db_info.php");
     
-    $db = new mysqli(HOST, USER, PASSWORD, DATABASE, PORT);
+    $db = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
     if ($db->connect_errno) {
         echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
