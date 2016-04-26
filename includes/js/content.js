@@ -4,6 +4,8 @@ var count = 0;
 var playlists = new Array();
 var playlistsGot = false;
 getPlaylists();
+var pageLoaded = false;
+var isMyMusic = false;
 
 function addSong(track) {
     buildQueue(track);
@@ -34,6 +36,7 @@ function addSong(track) {
         song += '<button class="song_add" onclick="addToPlaylist(\'' + playlists[i] + '\', ' + count + ')">' + playlists[i] + '</button>';
     }
     song += `
+                                <button class="song_add" onclick="addToNewPlaylist(` + count + `)"><i>New Playlist</i></button>
                             </div>
                         </div>
                     </td>
@@ -47,12 +50,17 @@ function addSong(track) {
 }
 
 function pushSongs() {
+    pageLoaded = true;
+    isMyMusic = false;
     document.getElementById("song_list").innerHTML = songs;
     songs = "";
     count = 0;
 }
 
 function getMyMusic (tab) {
+    pageLoaded = false;
+    isMyMusic = true;
+    loadingAnim();
     toOneQueue();
     clearBuildQueue();
     
@@ -96,10 +104,13 @@ function getMyMusic (tab) {
 }
 
 function getGPMusic() {
-    
+    toGPMusic();
+    document.getElementById("content").innerHTML = "<h1>Google Play Music Functionality Not Yet Available</h1>";
 }
 
 function getSoundCloud(tab) {
+    pageLoaded = false;
+    loadingAnim();
     toSoundCloud();
     clearBuildQueue();
     var content = "";
@@ -138,8 +149,7 @@ function getSoundCloud(tab) {
         `;
     }
     document.getElementById("content").innerHTML = content;
-    //alert("Connected: " + SC.isConnected());
-    
+
     if (!SC.isConnected()) {
         SC.connect().then(function() {
             getSoundCloud(tab);
@@ -149,7 +159,6 @@ function getSoundCloud(tab) {
         SC.get('/me').then(function(me) {
             if (tab == 'playlists') {
                 SC.get('/users/'+me.id+'/playlists').then(function(playlists) {
-                    //alert("LENGTH: "+playlists.length);
                     if (playlists.length == 0) {
                         document.getElementById("song_list").innerHTML = '<h2>You don\'t have any playlists yet</h2>';
                     } else {
@@ -157,17 +166,14 @@ function getSoundCloud(tab) {
                             <h1 style="padding: 0.5em 1em 0.5em 1em; margin: 0;">`+playlists[0].title+`</h1>
                             <hr class="song_hr">
                         `;
-                        //document.getElementById("song_list").innerHTML = playlists[0].tracks;
                         var i;
                         for (i = 0; i < playlists[0].tracks.length; i++) {
                             addSong({title:playlists[0].tracks[i].title,
                                 artist:playlists[0].tracks[i].user.username,
                                 thumbnail:playlists[0].tracks[i].artwork_url,
                                 url:playlists[0].tracks[i].stream_url+"?client_id="+CLIENT_ID});
-                            //addSong(playlists[0].tracks[i].title, playlists[0].tracks[i].user.username, "Album Name", playlists[0].tracks[i].artwork_url, playlists[0].tracks[i].stream_url+"?client_id="+CLIENT_ID);
                         }
                         pushSongs();
-                        //document.getElementById("song_list").innerHTML = playlists;
                     }
                 });
             } else if (tab == 'likes') {
@@ -176,13 +182,11 @@ function getSoundCloud(tab) {
                         if (likes.length == 0) {
                             document.getElementById("song_list").innerHTML = '<h1>You don\'t have any likes yet</h1>';
                         } else {
-                            var i;
-                            for (i = 0; i < likes.length; i++) {
+                            for (var i = 0; i < likes.length; i++) {
                                 addSong({title:likes[i].title, 
                                     artist:likes[i].user.username,
                                     thumbnail:likes[i].artwork_url,
                                     url:likes[i].stream_url+"?client_id="+CLIENT_ID});
-                                //addSong(likes[i].title, likes[i].user.username, "Album Name", likes[i].artwork_url, likes[i].stream_url+"?client_id="+CLIENT_ID);
                             }
                             pushSongs();
                         }
@@ -198,10 +202,13 @@ function getPandora() {
 }
 
 function getSpotify() {
-    
+    toSpotify();
+    document.getElementById("content").innerHTML = "<h1>Spotify Functionality Not Yet Available</h1>";
 }
 
 function getHypeMachine(tab) {
+    pageLoaded = false;
+    loadingAnim();
     toHypeM();
     clearBuildQueue();
     var content = "";
@@ -296,4 +303,110 @@ function addToPlaylist(playlist, index) {
         "&thumbnail=" + song.thumbnail + 
         "&url=" + song.url, true);
     xhttp.send();
+}
+
+function addToNewPlaylist(index) {
+    var newPlaylist = prompt("Name your new Playlist", "Playlist");
+    var song = getSongFromBuildQueue(index);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            //Song Inserted in Playlist
+        }
+    };
+    xhttp.open("GET", "includes/playlists.php?id=" + "1" + 
+        "&playlist=" + newPlaylist + 
+        "&title=" + song.title + 
+        "&artist=" + song.artist + 
+        "&thumbnail=" + song.thumbnail + 
+        "&url=" + song.url, true);
+    xhttp.send();
+}
+
+function search(tab) {
+    window.location.hash = '#search';
+    pageLoaded = false;
+    loadingAnim();
+    toOneQueue();
+    clearBuildQueue();
+    var query = document.getElementById("searchbar").value;
+    if (tab == "soundcloud") {
+        content = `
+            <ul id="top_menu">
+                <li class="tm_active"><button onclick="search(\'soundcloud\')">Sound Cloud</button></li>
+                <li><button onclick="search(\'hypemachine\')">Hype Machine</button></li>
+            </ul>
+            <hr class="song_hr">
+            <div id="song_list">
+            </div>
+        `;
+        document.getElementById("content").innerHTML = content;
+        if (!SC.isConnected()) {
+            SC.connect().then(function() {
+                search();
+            });
+            return;
+        } else {
+            SC.get('/tracks', {q: query}).then(function(tracks) {
+                for (var i = 0; i < tracks.length; i++) {
+                    addSong({title:tracks[i].title, 
+                        artist:tracks[i].user.username,
+                        thumbnail:tracks[i].artwork_url,
+                        url:tracks[i].stream_url+"?client_id="+CLIENT_ID});
+                }
+                pushSongs();
+            });
+        }
+    } else if (tab == "hypemachine") {
+        content = `
+            <ul id="top_menu">
+                <li><button onclick="search(\'soundcloud\')">Sound Cloud</button></li>
+                <li class="tm_active"><button onclick="search(\'hypemachine\')">Hype Machine</button></li>
+            </ul>
+            <hr class="song_hr">
+            <div id="song_list">
+            </div>
+        `;
+        document.getElementById("content").innerHTML = content;
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                var tracks = JSON.parse(xhttp.responseText).tracks;
+                for (var i = 0; i < tracks.length; i++) {
+                    addSong(tracks[i]);
+                }
+                pushSongs();
+            }
+        };
+        xhttp.open("GET", "includes/hypemachine.php?q="+query, true);
+        xhttp.send();
+    }
+}
+
+function loadingAnim() {
+    var loadingDiv = document.getElementById("load_div");
+    loadingDiv.style.display = 'none';
+    loadingDiv.innerHTML = `
+        <svg class="load_icon" width="64" height="64">
+            <circle cx="32" cy="32" r="32" fill="darkgrey"/>
+            <circle class="onequeuecircle" cx="32" cy="32" r="12" fill="white"/>
+            <circle cx="32" cy="32" r="6" fill="darkgrey"/>
+            <polygon class="onequeue1" points="38,56 38,20 44,20 44,50 48,50 44,56" style="fill:white"/>
+            <polygon class="onequeue2" points="20,8 16,14 20,14 20,44 26,44 26,8" style="fill:#00525F"/>
+        </svg>
+    `;
+    loadingDiv.className = "fade_div_in";
+    loadingDiv.style.display = 'block';
+    var pageWait = setInterval(isPageLoaded, 500);
+    function isPageLoaded() {
+        if (pageLoaded) {
+            clearTimeout(pageWait);
+            loadingDiv.className = "fade_div_out";
+            var fadeWait = setTimeout(fadeDone, 1000);
+            function fadeDone() {
+                clearTimeout(fadeWait);
+                loadingDiv.style.display = 'none';
+            }
+        }
+    }   
 }

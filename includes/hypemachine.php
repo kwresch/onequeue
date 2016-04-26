@@ -2,11 +2,11 @@
 
     $ch = curl_init();
 
-    if ($_GET['tab'] == "latest") {
-        curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/tracks?count=10&key=swagger');
-    } else if ($_GET['tab'] == "popular") {
+    if (isset($_GET['tab']) && $_GET['tab'] == "latest") {
+        curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/tracks?count=20&key=swagger');
+    } else if (isset($_GET['tab']) && $_GET['tab'] == "popular") {
         curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/popular?count=20&key=swagger');
-    } else if ($_GET['tab'] == "favorites") {
+    } else if (isset($_GET['tab']) && $_GET['tab'] == "favorites") {
         include_once("logged_in.php");
         if ($hm_token == 0) {
             $hm_username = "keenanw";
@@ -26,6 +26,8 @@
             $hm_token = $json->{'hm_token'};
         }
         curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/me/favorites?count=20&hm_token='.$hm_token.'&key=swagger');
+    } else if (isset($_GET['q'])) {
+        curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/tracks?q='.$_GET['q'].'&key=swagger');
     } else {
         echo '
             <h1>404 ERROR</h1>
@@ -40,12 +42,14 @@
     $song_data = json_decode($content, true);
     
     $ch = curl_init();
-    if ($_GET['tab'] == 'latest') {
+    if (isset($_GET['tab']) && $_GET['tab'] == 'latest') {
         curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/latest');
-    } else if ($_GET['tab'] == 'popular') {
+    } else if (isset($_GET['tab']) && $_GET['tab'] == 'popular') {
         curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/popular?workaround=lol');
-    } else if ($_GET['tab'] == 'favorites') {
+    } else if (isset($_GET['tab']) && $_GET['tab'] == 'favorites') {
         curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/'.$hm_username);
+    } else if (isset($_GET['q'])) {
+        curl_setopt($ch, CURLOPT_URL, 'http://hypem.com/search/'.$_GET['q'].'/1/');
     }
     
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
