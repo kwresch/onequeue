@@ -5,6 +5,7 @@ body {
 }
 
 #header {
+    z-index: 101;
     position: fixed;
     top: 0;
     float: bottom;
@@ -154,6 +155,7 @@ body {
 }
 
 #navbar {
+    z-index: 102;
     position: fixed;
     left: -350px;
     top: 0;

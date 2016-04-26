@@ -347,7 +347,7 @@ function search(tab) {
             });
             return;
         } else {
-            SC.get('/tracks', {q: query}).then(function(tracks) {
+            SC.get('/tracks', {q: query, license: 'cc-by-sa'}).then(function(tracks) {
                 for (var i = 0; i < tracks.length; i++) {
                     addSong({title:tracks[i].title, 
                         artist:tracks[i].user.username,
