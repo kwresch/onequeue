@@ -54,7 +54,8 @@
         if (mysqli_num_rows($result) == 0) {
             $new_index = 1;
         } else {
-            $new_index = ($result->fetch_assoc())["song_index"] + 1;
+        	$row = $result->fetch_assoc();
+            $new_index = ($row["song_index"] + 1);
         }
         $db->query('INSERT INTO playlists 
             VALUES ('.$id.', 

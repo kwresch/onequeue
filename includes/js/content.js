@@ -6,6 +6,7 @@ var playlistsGot = false;
 var pageLoaded = false;
 var isMyMusic = false;
 getPlaylists();
+var hmSignedIn = false;
 
 function addSong(track) {
     buildQueue(track);
@@ -58,16 +59,17 @@ function pushSongs() {
 }
 
 function getMyMusic (tab) {
+	document.getElementById("hm_popup").display = "none";
     pageLoaded = false;
     isMyMusic = true;
     loadingAnim();
     toOneQueue();
     clearBuildQueue();
     
-    var plwait = setTimeout(isPLBuilt, 500);
+    var plwait = setInterval(isPLBuilt, 500);
     function isPLBuilt() {
         if (playlistsGot) {
-            clearTimeout(plwait);
+            clearInterval(plwait);
             playlistsBuilt = false;
             content = `
                 <ul id="top_menu">
@@ -104,11 +106,13 @@ function getMyMusic (tab) {
 }
 
 function getGPMusic() {
+	document.getElementById("hm_popup").display = "none";
     toGPMusic();
     document.getElementById("content").innerHTML = "<h1>Google Play Music Functionality Not Yet Available</h1>";
 }
 
 function getSoundCloud(tab) {
+	document.getElementById("hm_popup").display = "none";
     pageLoaded = false;
     loadingAnim();
     toSoundCloud();
@@ -202,11 +206,13 @@ function getPandora() {
 }
 
 function getSpotify() {
+	document.getElementById("hm_popup").display = "none";
     toSpotify();
     document.getElementById("content").innerHTML = "<h1>Spotify Functionality Not Yet Available</h1>";
 }
 
 function getHypeMachine(tab) {
+	document.getElementById("hm_popup").display = "none";
     pageLoaded = false;
     loadingAnim();
     toHypeM();
@@ -245,6 +251,11 @@ function getHypeMachine(tab) {
             <div id="song_list">
             </div>
         `;
+        if (!hmSignedIn) {
+    		document.getElementById("content").innerHTML = content;
+    		hmSignIn();
+    		return;
+		}
     } else {
         content = `
             <ul id="top_menu">
@@ -324,6 +335,7 @@ function addToNewPlaylist(index) {
 }
 
 function search(tab) {
+	document.getElementById("hm_popup").display = "none";
     window.location.hash = '#search';
     pageLoaded = false;
     loadingAnim();
@@ -381,6 +393,43 @@ function search(tab) {
         xhttp.open("GET", "includes/hypemachine.php?q="+query, true);
         xhttp.send();
     }
+}
+
+function hmSignIn() {
+	pageLoaded = true;
+	var hmPopUp = document.getElementById("hm_popup");
+	hmPopUp.innerHTML = `
+		<form onsubmit="hmSignInCall(); return false;">
+			<h2>Hype Machine Log In</h2>
+			<input id="hm_username" type="text" placeholder="Username"/><br>
+			<input id="hm_password" type="password" placeholder="Password"/><br>
+			<input type="submit" value="Sign In"/>
+		</form>
+	`;
+	hmPopUp.style.position = "absolute";
+	hmPopUp.style.left = "40%";
+	hmPopUp.style.top = "40%";
+	hmPopUp.style.zIndex = "200";
+	hmPopUp.display = "block";
+}
+
+function hmSignInCall() {
+	pageLoaded = false;
+	loadingAnim();
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            // Hype Machine Signed In
+            hmSignedIn = true;
+    		getHypeMachine('favorites');
+        }
+    };
+    xhttp.open("POST", "includes/hypemachine.php", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("hm_username=" + document.getElementById("hm_username").value + "&hm_password=" + document.getElementById("hm_password").value);
+    var hmPopUp = document.getElementById("hm_popup");
+    hmPopUp.style.display = "none";
+    hmPopUp.innerHTML = "";
 }
 
 function loadingAnim() {

@@ -1,4 +1,12 @@
-<?php 
+<?php 	
+	session_start();
+	
+	if (isset($_POST['hm_username'])) {
+		$_SESSION['hm_username'] = $_POST['hm_username'];
+		$_SESSION['hm_password'] = $_POST['hm_password'];
+		return;
+	}
+
 
     $ch = curl_init();
 
@@ -9,8 +17,13 @@
     } else if (isset($_GET['tab']) && $_GET['tab'] == "favorites") {
         include_once("logged_in.php");
         if ($hm_token == 0) {
-            $hm_username = "keenanw";
-            $hm_password = "keenan@1";
+        	if (isset($_SESSION['hm_username'])) {
+            	$hm_username = $_SESSION['hm_username'];
+            	$hm_password = $_SESSION['hm_password'];
+        	} else {
+        		return;
+        	}
+
             $login = curl_init();
         
             curl_setopt($login, CURLOPT_URL, 'https://api.hypem.com/v2/get_token?key=swagger');
@@ -29,9 +42,7 @@
     } else if (isset($_GET['q'])) {
         curl_setopt($ch, CURLOPT_URL, 'https://api.hypem.com/v2/tracks?q='.$_GET['q'].'&key=swagger');
     } else {
-        echo '
-            <h1>404 ERROR</h1>
-        ';
+        echo '<h1>404 ERROR</h1>';
         return;
     }
     
@@ -104,31 +115,6 @@
         }
             
         echo json_encode($data);
-        
-        /*echo '
-            <div>
-                <ul class="song_ul">
-                    <li class="song_li">
-                        <img class="thumbnail" src="'.$song_data[$i]['thumb_url_medium'].'">
-                    </li>
-                    <li class="song_li">
-                        <ul class="song_info">
-                            <li>
-                                <p class="song_name">'.$song_data[$i]['title'].'</p>
-                                <p class="artist">'.$song_data[$i]['artist'].'</p>
-                            </li>
-                            <li>
-                                <p class="album">Album Name</p>
-                            </li>
-                            <li>
-                                <audio class="player" src="'.$url_data['url'].'" controls></audio>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <hr class="song_hr">
-            </div>
-        ';*/
     }
     echo ']}';
 ?>

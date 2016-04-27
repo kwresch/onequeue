@@ -1,3 +1,7 @@
+<?php
+	session_start();
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,6 +21,7 @@
         </div>
         <div id="queue"></div>
         <div id="load_div"></div>
+        <div id="hm_popup"></div>
     </body>
     <script>
             if(window.location.hash) {
